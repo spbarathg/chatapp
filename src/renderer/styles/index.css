@@ -144,7 +144,7 @@
 
 .btn-discord-secondary {
   @apply btn-discord bg-discord-bg-tertiary text-discord-text-primary
-         hover:bg-discord-hover focus:ring-discord-bg-secondary;
+         hover:bg-discord-bg-hover focus:ring-discord-bg-secondary;
 }
 
 /* Animation utilities */

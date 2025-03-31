@@ -49,35 +49,42 @@ const Login: React.FC = () => {
 
   if (step === 'select-user') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-discord-bg-primary p-section-gap">
-        <div className="w-full max-w-lg animate-fade-in">
-          <div className="text-center mb-section-gap">
-            <h1 className="text-title mb-3">
+      <div className="w-screen h-screen bg-[#12121b] flex flex-col items-center justify-center">
+        <div className="w-full max-w-screen-xl mx-auto px-8">
+          <div className="text-center mb-16">
+            <h1 className="font-montserrat text-4xl font-bold text-white mb-3">
               Welcome to Secure Chat
             </h1>
-            <p className="text-subtitle">
+            <h2 className="font-montserrat text-xl text-[#a0aec0]">
               Choose your profile to continue
-            </p>
+            </h2>
           </div>
           
-          <div className="grid grid-cols-2 gap-chat-padding">
-            {USERS.map((user) => (
-              <button
-                key={user.id}
-                onClick={() => handleUserSelect(user.id)}
-                className="chat-item group"
-              >
-                <div className="chat-avatar">
-                  <div className="avatar-circle">
-                    {user.avatar}
+          <div className="max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 gap-6">
+              {USERS.map((user) => (
+                <button
+                  key={user.id}
+                  onClick={() => handleUserSelect(user.id)}
+                  className="bg-[#2d2e40] rounded-lg p-6 flex items-center gap-4
+                           hover:bg-[#363749] transition-all duration-300
+                           focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
+                >
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full bg-[#5865F2] flex items-center justify-center
+                                  text-2xl font-semibold text-white">
+                      {user.avatar}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-[#5ADB6B] 
+                                  border-2 border-[#2d2e40]">
+                    </div>
                   </div>
-                  <div className="status-indicator status-online"></div>
-                </div>
-                <span className="ml-6 text-subtitle group-hover:text-discord-text-primary transition-all duration-smooth ease-smooth">
-                  {user.name}
-                </span>
-              </button>
-            ))}
+                  <span className="text-lg text-white font-montserrat font-medium">
+                    {user.name}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
