@@ -49,13 +49,13 @@ const Login: React.FC = () => {
 
   if (step === 'select-user') {
     return (
-      <div className="w-screen h-screen bg-[#12121b] flex flex-col items-center justify-center">
+      <div className="w-screen h-screen bg-dark-bg-primary flex flex-col items-center justify-center animate-fade-in">
         <div className="w-full max-w-screen-xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h1 className="font-montserrat text-4xl font-bold text-white mb-3">
+            <h1 className="font-inter text-4xl font-bold text-dark-text-primary mb-3">
               Welcome to Secure Chat
             </h1>
-            <h2 className="font-montserrat text-xl text-[#a0aec0]">
+            <h2 className="font-inter text-xl text-dark-text-muted">
               Choose your profile to continue
             </h2>
           </div>
@@ -66,20 +66,21 @@ const Login: React.FC = () => {
                 <button
                   key={user.id}
                   onClick={() => handleUserSelect(user.id)}
-                  className="bg-[#2d2e40] rounded-lg p-6 flex items-center gap-4
-                           hover:bg-[#363749] transition-all duration-300
-                           focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
+                  className="bg-dark-bg-secondary rounded-lg p-6 flex items-center gap-4
+                           hover:bg-dark-bg-hover transition-all duration-300
+                           focus:outline-none focus:ring-2 focus:ring-dark-accent-primary
+                           shadow-hover animate-slide-up"
                 >
                   <div className="relative">
-                    <div className="w-16 h-16 rounded-full bg-[#5865F2] flex items-center justify-center
-                                  text-2xl font-semibold text-white">
+                    <div className="w-16 h-16 rounded-avatar bg-dark-accent-primary flex items-center justify-center
+                                  text-2xl font-semibold text-white shadow-hover">
                       {user.avatar}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-[#5ADB6B] 
-                                  border-2 border-[#2d2e40]">
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-dark-online 
+                                  border-2 border-dark-bg-secondary">
                     </div>
                   </div>
-                  <span className="text-lg text-white font-montserrat font-medium">
+                  <span className="text-lg text-dark-text-primary font-inter font-medium">
                     {user.name}
                   </span>
                 </button>
@@ -92,14 +93,14 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="w-screen h-screen bg-[#12121b] flex flex-col items-center justify-center">
+    <div className="w-screen h-screen bg-dark-bg-primary flex flex-col items-center justify-center animate-fade-in">
       <div className="w-full max-w-md mx-auto px-8">
-        <div className="bg-[#2d2e40] rounded-lg p-8 shadow-lg">
+        <div className="bg-dark-bg-secondary rounded-lg p-8 shadow-lg animate-slide-up">
           <div className="text-center mb-8">
-            <h1 className="font-montserrat text-4xl font-bold text-white mb-3">
+            <h1 className="font-inter text-4xl font-bold text-dark-text-primary mb-3">
               Enter Secret Key
             </h1>
-            <p className="font-montserrat text-xl text-[#a0aec0]">
+            <p className="font-inter text-xl text-dark-text-muted">
               for {USERS.find(u => u.id === selectedUser)?.name}
             </p>
           </div>
@@ -110,9 +111,9 @@ const Login: React.FC = () => {
                 type="password"
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
-                className="w-full bg-[#363749] text-white px-4 py-3 rounded-lg border-2 border-[#363749]
-                         focus:outline-none focus:border-[#5865F2] transition-all duration-300
-                         placeholder-[#a0aec0]"
+                className="w-full bg-dark-input-bg text-dark-text-primary px-4 py-3 rounded-input border-2 border-dark-input-border
+                         focus:outline-none focus:border-dark-input-focus transition-all duration-300
+                         placeholder-dark-text-muted shadow-input"
                 placeholder="Enter your secret key"
                 required
                 autoFocus
@@ -120,8 +121,8 @@ const Login: React.FC = () => {
             </div>
 
             {error && (
-              <div className="bg-[#ff555520] rounded-lg p-3">
-                <p className="text-[#ff5555] text-center font-montserrat">
+              <div className="bg-dark-error-bg rounded-lg p-3">
+                <p className="text-dark-error text-center font-inter">
                   {error}
                 </p>
               </div>
@@ -131,17 +132,17 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 onClick={handleBack}
-                className="flex-1 bg-[#363749] text-white px-6 py-3 rounded-lg font-montserrat
-                         hover:bg-[#404259] transition-all duration-300
-                         focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
+                className="flex-1 bg-dark-bg-tertiary text-dark-text-primary px-6 py-3 rounded-button font-inter
+                         hover:bg-dark-bg-hover transition-all duration-300
+                         focus:outline-none focus:ring-2 focus:ring-dark-accent-primary shadow-hover"
               >
                 Back
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-[#5865F2] text-white px-6 py-3 rounded-lg font-montserrat
-                         hover:bg-[#4752C4] transition-all duration-300
-                         focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
+                className="flex-1 bg-dark-accent-primary text-white px-6 py-3 rounded-button font-inter
+                         hover:bg-dark-accent-hover transition-all duration-300
+                         focus:outline-none focus:ring-2 focus:ring-dark-accent-primary shadow-hover"
               >
                 Login
               </button>

@@ -7,21 +7,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
       },
       colors: {
-        'discord': {
-          'bg-primary': '#1E1E2F',
-          'bg-secondary': '#262637',
-          'bg-tertiary': '#2E2E3F',
-          'bg-hover': '#343444',
-          'bg-active': '#3C3C4F',
+        'dark': {
+          'bg-primary': '#12121B',
+          'bg-secondary': '#1E1E2F',
+          'bg-tertiary': '#262637',
+          'bg-hover': '#2E2E3F',
+          'bg-active': '#343444',
           'text-primary': '#FFFFFF',
           'text-secondary': '#E1E1E6',
           'text-muted': '#888888',
-          'interactive-primary': '#5865F2',
-          'interactive-hover': '#4752C4',
-          'interactive-muted': '#4B4B71',
+          'accent-primary': '#5865F2',
+          'accent-hover': '#4752C4',
+          'accent-muted': '#4B4B71',
           'border': '#444444',
           'message-sent': '#2E2E3F',
           'message-received': '#343444',
@@ -48,8 +48,8 @@ module.exports = {
         'input': '0 1px 3px rgba(0, 0, 0, 0.1)',
       },
       borderRadius: {
-        'message': '8px',
-        'input': '6px',
+        'message': '12px',
+        'input': '8px',
         'button': '8px',
         'avatar': '50%',
       },
@@ -71,6 +71,20 @@ module.exports = {
       },
       transitionTimingFunction: {
         'smooth': 'ease-in-out',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.2s ease-in-out',
+        'slide-up': 'slideUp 0.2s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
       },
     },
   },
