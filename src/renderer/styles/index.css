@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-discord-bg-primary text-discord-text-primary antialiased font-sans;
+  }
+
+  * {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-discord-bg-tertiary rounded-full;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-discord-interactive-muted rounded-full hover:bg-discord-interactive-hover transition-all duration-smooth ease-smooth;
+  }
+
+  /* Chat item styles */
+  .chat-item {
+    @apply flex items-center p-chat-padding bg-discord-bg-secondary hover:bg-discord-bg-hover 
+           active:bg-discord-bg-active rounded-message transition-all duration-smooth ease-smooth;
+  }
+
+  .chat-avatar {
+    @apply relative flex-shrink-0;
+  }
+
+  .avatar-circle {
+    @apply w-12 h-12 rounded-avatar bg-discord-interactive-primary flex items-center justify-center 
+           text-discord-text-primary text-xl font-medium shadow-message 
+           group-hover:shadow-hover transition-all duration-smooth ease-smooth;
+  }
+
+  .status-indicator {
+    @apply absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-discord-bg-secondary;
+  }
+
+  .status-online {
+    @apply bg-discord-online;
+  }
+
+  /* Message styles */
+  .message-bubble {
+    @apply max-w-message rounded-message px-4 py-3 shadow-message;
+  }
+
+  .message-sent {
+    @apply bg-discord-message-sent text-discord-text-primary;
+  }
+
+  .message-received {
+    @apply bg-discord-message-received text-discord-text-primary;
+  }
+
+  /* Input styles */
+  .input-primary {
+    @apply w-full bg-discord-input-bg border border-discord-input-border rounded-input px-4 py-3 
+           text-input text-discord-text-primary placeholder-discord-text-muted
+           focus:outline-none focus:border-discord-input-focus focus:ring-1 focus:ring-discord-input-focus
+           transition-all duration-smooth ease-smooth shadow-input;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply bg-discord-interactive-primary text-discord-text-primary px-6 py-3 rounded-button font-medium
+           hover:bg-discord-interactive-hover focus:outline-none focus:ring-2 
+           focus:ring-discord-interactive-hover focus:ring-offset-2 focus:ring-offset-discord-bg-primary
+           transition-all duration-smooth ease-smooth disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-discord-bg-tertiary text-discord-text-primary px-6 py-3 rounded-button font-medium
+           hover:bg-discord-bg-hover focus:outline-none focus:ring-2 
+           focus:ring-discord-bg-hover focus:ring-offset-2 focus:ring-offset-discord-bg-primary
+           transition-all duration-smooth ease-smooth;
+  }
+
+  /* Typography */
+  .text-title {
+    @apply text-chat-title font-bold text-discord-text-primary;
+  }
+
+  .text-subtitle {
+    @apply text-message-preview font-medium text-discord-text-secondary;
+  }
+
+  .text-body {
+    @apply text-input text-discord-text-secondary leading-message;
+  }
+
+  .text-meta {
+    @apply text-timestamp text-discord-text-muted;
+  }
+
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 200ms ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Custom styles for inputs */
+.input-discord {
+  @apply w-full px-4 py-3 bg-discord-bg-tertiary text-discord-text-primary 
+         placeholder-discord-text-muted rounded-input text-input
+         focus:outline-none focus:ring-2 focus:ring-discord-interactive-primary
+         transition-all duration-200 ease-in-out;
+}
+
+/* Custom styles for buttons */
+.btn-discord {
+  @apply px-6 py-3 rounded-input font-medium text-input
+         transition-all duration-200 ease-in-out
+         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-discord-bg-primary;
+}
+
+.btn-discord-primary {
+  @apply btn-discord bg-discord-interactive-primary text-white
+         hover:bg-opacity-90 focus:ring-discord-interactive-primary;
+}
+
+.btn-discord-secondary {
+  @apply btn-discord bg-discord-bg-tertiary text-discord-text-primary
+         hover:bg-discord-hover focus:ring-discord-bg-secondary;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 

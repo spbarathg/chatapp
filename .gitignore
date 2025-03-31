@@ -1,0 +1,36 @@
+# Build outputs
+/release/
+/dist/
+/build/
+
+# Dependencies
+/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Electron specific
+.electron-builder.env
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+
+# Temporary files
+tmp/
+temp/ 
