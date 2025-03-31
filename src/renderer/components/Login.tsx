@@ -92,14 +92,14 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-discord-bg-primary p-section-gap">
-      <div className="w-full max-w-md animate-fade-in">
-        <div className="bg-discord-bg-secondary p-8 rounded-message shadow-message">
+    <div className="w-screen h-screen bg-[#12121b] flex flex-col items-center justify-center">
+      <div className="w-full max-w-md mx-auto px-8">
+        <div className="bg-[#2d2e40] rounded-lg p-8 shadow-lg">
           <div className="text-center mb-8">
-            <h1 className="text-title mb-3">
+            <h1 className="font-montserrat text-4xl font-bold text-white mb-3">
               Enter Secret Key
             </h1>
-            <p className="text-subtitle">
+            <p className="font-montserrat text-xl text-[#a0aec0]">
               for {USERS.find(u => u.id === selectedUser)?.name}
             </p>
           </div>
@@ -110,7 +110,9 @@ const Login: React.FC = () => {
                 type="password"
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
-                className="input-primary"
+                className="w-full bg-[#363749] text-white px-4 py-3 rounded-lg border-2 border-[#363749]
+                         focus:outline-none focus:border-[#5865F2] transition-all duration-300
+                         placeholder-[#a0aec0]"
                 placeholder="Enter your secret key"
                 required
                 autoFocus
@@ -118,8 +120,8 @@ const Login: React.FC = () => {
             </div>
 
             {error && (
-              <div className="bg-discord-error-bg rounded-message p-3">
-                <p className="text-discord-error text-message-preview text-center">
+              <div className="bg-[#ff555520] rounded-lg p-3">
+                <p className="text-[#ff5555] text-center font-montserrat">
                   {error}
                 </p>
               </div>
@@ -129,13 +131,17 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 onClick={handleBack}
-                className="btn-secondary"
+                className="flex-1 bg-[#363749] text-white px-6 py-3 rounded-lg font-montserrat
+                         hover:bg-[#404259] transition-all duration-300
+                         focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
               >
                 Back
               </button>
               <button
                 type="submit"
-                className="btn-primary"
+                className="flex-1 bg-[#5865F2] text-white px-6 py-3 rounded-lg font-montserrat
+                         hover:bg-[#4752C4] transition-all duration-300
+                         focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
               >
                 Login
               </button>
