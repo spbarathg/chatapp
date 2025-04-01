@@ -1,22 +1,178 @@
 # Secure Chat Application
 
-A dark-themed, minimalist chat application with end-to-end encryption and strong privacy features.
+A highly secure, end-to-end encrypted chat application built with TypeScript, Express, and WebSocket. This application implements multiple layers of security measures to ensure user privacy and data protection.
 
-## Features
+## Architecture Overview
 
-- **End-to-End Encryption**: All messages are encrypted using the Signal Protocol-inspired encryption scheme
-- **Dark Theme**: Modern, eye-friendly interface
-- **Minimalist Design**: Clean and intuitive user interface
-- **Local Data Storage**: Messages and keys are stored securely on your device
-- **Key Verification**: Built-in key verification system for secure communication
-- **Privacy Settings**: Configurable message auto-deletion and key rotation reminders
+### System Components
+```
+secure-chat/
+├── client/                 # React frontend
+├── server/                 # Express backend
+│   ├── src/
+│   │   ├── database/      # Database operations
+│   │   ├── routes/        # API routes
+│   │   ├── utils/         # Utilities
+│   │   └── websocket/     # WebSocket handling
+│   └── tests/             # Test files
+└── shared/                # Shared types and utilities
+```
 
-## Installation
+### Data Flow
+1. **Client-Server Communication**
+   - HTTPS/SSL/TLS encryption for all HTTP requests
+   - WebSocket for real-time messaging
+   - JWT-based authentication
+   - Rate limiting per IP
 
+2. **Message Flow**
+   ```
+   Sender -> Encrypt -> Server -> Decrypt -> Recipient
+   ```
+   - Messages are encrypted client-side
+   - Server only handles encrypted data
+   - Zero-knowledge message storage
+
+3. **Security Layers**
+   - Network Security (HTTPS, WSS)
+   - Application Security (Input validation, XSS protection)
+   - Data Security (Encryption, Hashing)
+   - Access Control (Authentication, Authorization)
+
+## Security Features
+
+### End-to-End Encryption
+- Asymmetric encryption using RSA-4096 for key exchange
+- Symmetric encryption using AES-256-GCM for message encryption
+- Perfect forward secrecy with ephemeral key pairs
+- Zero-knowledge message storage (only encrypted data is stored)
+
+### Authentication & Authorization
+- Secure password hashing using Argon2id
+- JWT-based authentication with short-lived tokens
+- Session management with secure session keys
+- Two-factor authentication support
+- Rate limiting and brute force protection
+
+### Data Protection
+- No plaintext data storage
+- Encrypted metadata
+- Automatic data cleanup
+- Secure backup system
+- Database encryption at rest
+
+### Network Security
+- HTTPS/SSL/TLS encryption
+- WebSocket security with message validation
+- CORS protection
+- Security headers (HSTS, CSP, XSS protection)
+- Rate limiting per IP
+
+### Monitoring & Logging
+- Comprehensive security event logging
+- System health monitoring
+- Real-time security alerts
+- Audit logging
+- Anonymized logging (no sensitive data)
+
+## Database Schema
+
+### Core Tables
+1. **users**
+   - Encrypted user data
+   - Public/private key pairs
+   - Security settings
+
+2. **sessions**
+   - Secure session management
+   - Hashed IP and user agent
+   - Automatic cleanup
+
+3. **messages**
+   - End-to-end encrypted content
+   - Secure metadata
+   - Retention policies
+
+4. **security_events**
+   - Audit logging
+   - Security monitoring
+   - Event tracking
+
+### Supporting Tables
+1. **message_retention**
+   - Message lifecycle management
+   - Retention policies
+   - Automatic cleanup
+
+2. **backup_history**
+   - Secure backup tracking
+   - Expiration management
+   - Data recovery
+
+3. **rate_limits**
+   - Request tracking
+   - Rate limiting
+   - Abuse prevention
+
+## Monitoring System
+
+### Metrics Collection
+- Memory usage
+- CPU utilization
+- Active connections
+- Failed login attempts
+- Failed requests
+- Database size
+
+### Alert System
+- Real-time monitoring
+- Threshold-based alerts
+- Severity levels
+- Alert resolution
+
+### Data Retention
+- Configurable retention periods
+- Automatic cleanup
+- Secure storage
+- Audit trails
+
+## Logging System
+
+### Log Types
+1. **Application Logs**
+   - Error tracking
+   - Performance monitoring
+   - Debug information
+
+2. **Security Logs**
+   - Authentication events
+   - Access attempts
+   - Security violations
+
+3. **Audit Logs**
+   - User actions
+   - System changes
+   - Security events
+
+### Log Management
+- Daily rotation
+- Size limits
+- Compression
+- Secure storage
+
+## Setup & Installation
+
+### Prerequisites
+- Node.js (v16 or higher)
+- SQLite3
+- TypeScript
+- npm or yarn
+
+### Installation Steps
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/secure-chat-app.git
-cd secure-chat-app
+git clone https://github.com/yourusername/secure-chat.git
+cd secure-chat
 ```
 
 2. Install dependencies:
@@ -24,69 +180,101 @@ cd secure-chat-app
 npm install
 ```
 
-3. Start the development server:
+3. Set up environment variables:
 ```bash
-npm run dev
+cp server/.env.example server/.env
 ```
+Edit the `.env` file with your configuration.
 
-4. Build for production:
+4. Build the application:
 ```bash
 npm run build
 ```
 
+### Configuration
+Key environment variables:
+- `PORT`: Server port (default: 3001)
+- `NODE_ENV`: Environment (development/production)
+- `JWT_SECRET`: Secret for JWT signing
+- `SESSION_SECRET`: Secret for session encryption
+- `DATABASE_PATH`: Path to SQLite database
+- `BACKUP_PATH`: Path for database backups
+- `LOG_LEVEL`: Logging verbosity
+- `RATE_LIMIT_WINDOW`: Rate limiting window (ms)
+- `RATE_LIMIT_MAX`: Maximum requests per window
+
 ## Usage
 
-1. **First Launch**:
-   - Create a new account by entering your username and password
-   - The application will generate your encryption keys
-   - Save your verification phrase securely
+### Starting the Server
+```bash
+npm start
+```
 
-2. **Adding Contacts**:
-   - Share your verification phrase with your contacts
-   - Add contacts using their verification phrases
-   - Verify the connection by comparing verification phrases
+### Accessing the Application
+- Web interface: http://localhost:3000
+- API documentation: http://localhost:3001/api-docs
 
-3. **Sending Messages**:
-   - Select a contact from the sidebar
-   - Type your message in the input field
-   - Press Enter or click Send to send the message
+### Security Best Practices
 
-4. **Security Features**:
-   - Messages are automatically encrypted before sending
-   - Keys are stored securely on your device
-   - Configure auto-deletion and key rotation in Settings
+1. **Password Management**
+   - Use strong, unique passwords
+   - Enable two-factor authentication
+   - Regular password rotation
 
-## Security Considerations
+2. **Session Security**
+   - Log out after use
+   - Clear browser data regularly
+   - Use secure browsers
 
-- All messages are encrypted end-to-end
-- Encryption keys are generated locally and never leave your device
-- Messages are stored locally in an encrypted format
-- No central server stores your messages
-- Regular key rotation is recommended for maximum security
+3. **Data Protection**
+   - Regular backups
+   - Secure key storage
+   - Message retention policies
+
+4. **Network Security**
+   - Use HTTPS only
+   - Avoid public networks
+   - Keep systems updated
 
 ## Development
 
-The application is built with:
-- Electron for the desktop application
-- React for the user interface
-- TypeScript for type safety
-- libsodium for encryption
-- Styled-components for styling
+### Running Tests
+```bash
+npm test
+```
+
+### Code Style
+```bash
+npm run lint
+npm run format
+```
+
+### Development Guidelines
+1. Follow TypeScript best practices
+2. Maintain test coverage
+3. Document all changes
+4. Review security implications
+5. Follow the code style guide
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Security Reporting
+
+If you discover a security vulnerability, please email security@yourdomain.com. Do not create public issues for security vulnerabilities.
+
 ## Acknowledgments
 
-- Signal Protocol for the encryption inspiration
-- Electron team for the desktop framework
-- React team for the UI framework 
+- Express.js team
+- React team
+- SQLite team
+- All contributors and maintainers 

@@ -1,23 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-interface Chat {
+interface Contact {
   id: string;
   name: string;
   lastMessage: string;
   timestamp: string;
+  isGroup?: boolean;
 }
 
 const ChatList: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [chats, setChats] = useState<Chat[]>([
-    { id: 'default', name: 'General', lastMessage: 'Welcome to the chat!', timestamp: new Date().toISOString() },
-    { id: 'team', name: 'Team Chat', lastMessage: 'Let\'s discuss the project', timestamp: new Date().toISOString() },
-    { id: 'random', name: 'Random', lastMessage: 'Hello everyone!', timestamp: new Date().toISOString() },
-  ]);
+  const [currentUser, setCurrentUser] = useState<string>('');
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const currentChatId = location.pathname.split('/').pop() || 'default';
+  useEffect(() => {
+    const loadUserAndContacts = async () => {
+      try {
+        const userData = await window.electron.ipcRenderer.invoke('get-current-user');
+        setCurrentUser(userData.username);
+
+        // Get all valid users
+        const allUsers = ['tanish', 'joseph', 'barath', 'yashas'];
+        
+        // Filter out current user and create contact list
+        const userContacts = allUsers
+          .filter(user => user !== userData.username)
+          .map(user => ({
+            id: user,
+            name: user.charAt(0).toUpperCase() + user.slice(1),
+            lastMessage: 'No messages yet',
+            timestamp: new Date().toISOString(),
+          }));
+
+        // Add group chat
+        const groupChat: Contact = {
+          id: 'group',
+          name: 'Group Chat',
+          lastMessage: 'Welcome to the group chat!',
+          timestamp: new Date().toISOString(),
+          isGroup: true
+        };
+
+        setContacts([groupChat, ...userContacts]);
+      } catch (error) {
+        console.error('Error loading contacts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadUserAndContacts();
+  }, []);
+
+  const currentChatId = location.pathname.split('/').pop() || 'group';
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-dark-accent-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col bg-dark-bg-secondary animate-fade-in">
@@ -25,28 +71,32 @@ const ChatList: React.FC = () => {
         <h2 className="text-chat-title font-bold text-dark-text-primary">Chats</h2>
       </div>
       <div className="flex-1 overflow-y-auto py-2">
-        {chats.map((chat) => (
+        {contacts.map((contact) => (
           <button
-            key={chat.id}
-            onClick={() => navigate(`/chat/${chat.id}`)}
+            key={contact.id}
+            onClick={() => navigate(`/chat/${contact.id}`)}
             className={`w-full px-6 py-4 flex items-start space-x-4 hover:bg-dark-bg-hover transition-smooth animate-slide-up ${
-              currentChatId === chat.id ? 'bg-dark-bg-active' : ''
+              currentChatId === contact.id ? 'bg-dark-bg-active' : ''
             }`}
           >
             <div className="relative">
-              <div className="w-12 h-12 rounded-avatar bg-dark-accent-primary flex items-center justify-center text-white font-medium text-lg shadow-hover">
-                {chat.name[0]}
+              <div className={`w-12 h-12 rounded-avatar flex items-center justify-center text-white font-medium text-lg shadow-hover ${
+                contact.isGroup ? 'bg-dark-accent-secondary' : 'bg-dark-accent-primary'
+              }`}>
+                {contact.isGroup ? '👥' : contact.name[0]}
               </div>
-              <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-dark-online border-2 border-dark-bg-secondary"></div>
+              {!contact.isGroup && (
+                <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-dark-online border-2 border-dark-bg-secondary"></div>
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-baseline mb-1">
-                <h3 className="text-dark-text-primary font-semibold truncate">{chat.name}</h3>
+                <h3 className="text-dark-text-primary font-semibold truncate">{contact.name}</h3>
                 <span className="text-timestamp text-dark-text-muted ml-2">
-                  {new Date(chat.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(contact.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
-              <p className="text-message-preview text-dark-text-muted truncate">{chat.lastMessage}</p>
+              <p className="text-message-preview text-dark-text-muted truncate">{contact.lastMessage}</p>
             </div>
           </button>
         ))}

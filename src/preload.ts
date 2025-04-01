@@ -30,6 +30,9 @@ contextBridge.exposeInMainWorld(
           'store-encryption-key',
           'get-encryption-key',
           'clear-encryption-key',
+          'close-app',
+          'validate-user',
+          'validate-secret-key'
         ];
         if (validChannels.includes(channel)) {
           return ipcRenderer.invoke(channel, ...args);

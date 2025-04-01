@@ -8,7 +8,7 @@
     "dev:main": "cross-env NODE_ENV=development TARGET=main webpack --watch",
     "dev:preload": "cross-env NODE_ENV=development TARGET=preload webpack --watch",
     "dev:renderer": "cross-env NODE_ENV=development TARGET=renderer webpack serve --progress",
-    "electron": "wait-on -v -d 15000 -t 60000 tcp:3006 && cross-env NODE_ENV=development electron dist/main/main.js",
+    "electron": "wait-on -v -d 15000 -t 60000 tcp:3007 && cross-env NODE_ENV=development electron dist/main/main.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack.config.js",
     "start": "cross-env NODE_ENV=production electron dist/main/main.js",
     "test": "jest"

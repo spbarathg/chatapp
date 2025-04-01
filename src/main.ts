@@ -32,16 +32,23 @@ function createWindow() {
   });
 
   if (isDev) {
-    mainWindow.loadURL('http://localhost:3006');
+    mainWindow.loadURL('http://localhost:3007');
     mainWindow.webContents.openDevTools();
 
     // Watch for changes in the renderer directory
     const rendererDir = path.join(__dirname, '..', 'renderer');
-    fs.watch(rendererDir, { recursive: true }, (eventType, filename) => {
-      if (mainWindow && filename) {
-        mainWindow.webContents.reload();
+    try {
+      if (!fs.existsSync(rendererDir)) {
+        fs.mkdirSync(rendererDir, { recursive: true });
       }
-    });
+      fs.watch(rendererDir, { recursive: true }, (eventType, filename) => {
+        if (mainWindow && filename) {
+          mainWindow.webContents.reload();
+        }
+      });
+    } catch (error) {
+      console.error('Error setting up renderer directory watch:', error);
+    }
   } else {
     mainWindow.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
   }
@@ -166,4 +173,19 @@ ipcMain.handle('get-is-dev', () => isDev);
 
 ipcMain.handle('delete-data', async (event, key: StoreKey) => {
   store.delete(key);
+});
+
+// Add handlers for user validation and app closing
+ipcMain.handle('validate-user', async (_event, { username }) => {
+  const validUsers = ['tanish', 'joseph', 'barath', 'yashas'];
+  return validUsers.includes(username);
+});
+
+ipcMain.handle('validate-secret-key', async (_event, { username, key }) => {
+  // For development, accept any non-empty key
+  return key && key.length > 0;
+});
+
+ipcMain.handle('close-app', async () => {
+  app.quit();
 });

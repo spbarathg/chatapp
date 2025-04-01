@@ -5,10 +5,24 @@ const webpack = require('webpack');
 const isDevelopment = process.env.NODE_ENV === 'development';
 const target = process.env.TARGET || 'renderer';
 
+// Common CSP directives
+const cspDirectives = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  "connect-src 'self' ws: wss: https:",
+  "worker-src 'self' blob:",
+  "child-src 'self' blob:",
+  "frame-src 'self'",
+  "media-src 'self'"
+].join('; ');
+
 const commonConfig = {
   mode: isDevelopment ? 'development' : 'production',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.wasm'],
     fallback: {
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify"),
@@ -59,7 +73,15 @@ const commonConfig = {
           },
         ],
       },
+      {
+        test: /\.wasm$/,
+        type: 'webassembly/async'
+      }
     ],
+  },
+  experiments: {
+    asyncWebAssembly: true,
+    syncWebAssembly: true
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -97,26 +119,27 @@ const rendererConfig = {
   },
   devServer: {
     host: 'localhost',
-    port: 3006,
+    port: 3007,
     compress: true,
     historyApiFallback: true,
-    static: {
-      directory: path.join(__dirname, 'dist/renderer'),
-      publicPath: '/'
-    },
+    hot: true,
+    static: [
+      {
+        directory: path.join(__dirname, 'public'),
+        publicPath: '/'
+      },
+      {
+        directory: path.join(__dirname, 'dist/renderer'),
+        publicPath: '/'
+      }
+    ],
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self';"
+      'Content-Security-Policy': cspDirectives
     },
     devMiddleware: {
       writeToDisk: true
-    },
-    watchFiles: {
-      paths: ['src/**/*.*'],
-      options: {
-        usePolling: false,
-      },
-    },
+    }
   },
   plugins: [
     ...commonConfig.plugins,
@@ -126,7 +149,7 @@ const rendererConfig = {
       meta: {
         'Content-Security-Policy': {
           'http-equiv': 'Content-Security-Policy',
-          content: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self';"
+          content: cspDirectives
         }
       }
     }),
